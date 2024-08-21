@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HD Wallet - Send Coins</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Global styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      :root {
+        --primary-color: #2d9cdb;
+        --secondary-color: #56ccf2;
+        --background-color: #f0f4f8;
+        --text-color: #333;
+        --box-shadow-color: rgba(0, 0, 0, 0.1);
+        --input-focus-color: #2d9cdb;
+        --nav-background: #ffffff;
+        --main-background: #ffffff;
+        --nav-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --card-background: #ffffff;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --box-padding: 20px;
+      }
+
+      body {
+        background: url("https://source.unsplash.com/random/1920x1080") no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: var(--background-color);
+        padding: 20px;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--nav-background);
+        padding: 10px 0;
+        box-shadow: var(--nav-shadow);
+      }
+
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      nav li {
+        margin: 0 15px;
+      }
+
+      nav a,
+      nav button {
+        color: var(--primary-color);
+        text-decoration: none;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      nav a:hover,
+      nav button:hover {
+        color: var(--secondary-color);
+      }
+
+      main {
+        background-color: var(--main-background);
+        box-shadow: var(--card-shadow);
+        border-radius: 10px;
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        margin-top: 80px;
+      }
+
+      h1 {
+        color: var(--primary-color);
+        margin-bottom: 30px;
+        font-size: 24px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        transition: border 0.3s;
+        font-size: 14px;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--input-focus-color);
+        box-shadow: 0 0 8px rgba(45, 156, 219, 0.5);
+      }
+
+      select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,<svg viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'><path d='M6 9l5-5-5-5' stroke='#ccc' stroke-width='2' fill='none'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right center;
+        padding-right: 30px;
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        color: white;
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
+      button[type="submit"]:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-toggle {
+        cursor: pointer;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: none;
+        width: 100%;
+        min-width: 170px;
+        z-index: 1;
+      }
+
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu li {
+        margin: 0;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .dropdown-menu li:last-child {
+        border-bottom: none;
+      }
+
+      .dropdown-menu a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .dropdown-menu a:hover {
+        color: var(--secondary-color);
+      }
+    </style>
+  </head>
+
+  <body onload="checkLoginStatus()">
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Wallet Actions V</a>
+          <ul class="dropdown-menu">
+            <li><a href="SendCoins.html">Send Coins</a></li>
+            <li><a href="TransactionHistory.html">Transaction History</a></li>
+            <li><a href="CreateWallet.html">Create Wallet</a></li>
+            <li><a href="RestoreAccount.html">Restore Account</a></li>
+          </ul>
+        </li>
+        <li><button onclick="logOut()">Log Out</button></li>
+      </ul>
+    </nav>
+    <main>
+      <h1>Send Coins</h1>
+      <p id="walletAddress" hidden></p>
+      <p id="walletBalance" hidden></p>
+      <form id="transactionForm" onsubmit="sendCoins(event)">
+        <label for="recipient">Recipient's Wallet ID:</label>
+        <input type="text" id="recipient" required />
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" step="any" required />
+        <label for="coin">Coin:</label>
+        <select id="coin" required>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="AVAX">Avalanche (AVAX)</option>
+        </select>
+        <button type="submit">Send Coins</button>
+      </form>
+      <div id="transactionResult"></div>
+      <div id="transactionStatus"></div>
+    </main>
+
+    <script src="/lightwallet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
+    <script src="/mainsfuncs.js"></script>
+  </body>
+</html>

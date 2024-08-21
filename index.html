@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HD Wallet</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Global stylessssss */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      :root {
+        --primary-color: #2d9cdb;
+        --secondary-color: #56ccf2;
+        --background-color: #f0f4f8;
+        --text-color: #333;
+        --box-shadow-color: rgba(0, 0, 0, 0.1);
+        --input-focus-color: #2d9cdb;
+        --nav-background: #ffffff;
+        --main-background: #ffffff;
+        --nav-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --card-background: #ffffff;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --box-padding: 20px;
+      }
+
+      body {
+        background: url("https://source.unsplash.com/random/1920x1080") no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding-top: 60px;
+        background-color: var(--background-color);
+      }
+
+      nav {
+        width: 100%;
+        background-color: var(--nav-background);
+        padding: 10px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: var(--nav-shadow);
+        z-index: 3;
+      }
+
+      ul {
+        list-style-type: none;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+      }
+
+      li {
+        margin: 0 15px;
+      }
+
+      a,
+      button {
+        color: var(--primary-color);
+        text-decoration: none;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      a:hover,
+      button:hover {
+        color: var(--secondary-color);
+      }
+
+      #loginStatus {
+        font-size: 1.2em;
+        position: fixed;
+        top: 55px;
+        left: 20px;
+        color: var(--primary-color);
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: var(--card-shadow);
+      }
+
+      main {
+        width: 80%;
+        max-width: 800px;
+        padding: var(--box-padding);
+        background-color: var(--main-background);
+        box-shadow: var(--card-shadow);
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 20px 0;
+        color: var(--text-color);
+      }
+
+      .infoRow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: var(--card-background);
+        border-radius: 5px;
+        box-shadow: var(--card-shadow);
+      }
+
+      .infoRow span:first-child {
+        font-weight: 600;
+        color: var(--text-color);
+        margin-right: 10px;
+        flex: 1;
+      }
+
+      .infoRow span:last-child {
+        font-weight: 400;
+        color: var(--text-color);
+        word-wrap: break-word;
+        flex: 3;
+      }
+
+      #ethPriceBox,
+      #avaxPriceBox {
+        position: fixed;
+        right: 20px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--card-shadow);
+        border-radius: 10px;
+        font-size: 1em;
+        font-weight: bold;
+      }
+
+      #ethPriceBox {
+        top: 120px;
+        border: 1px solid gold;
+      }
+
+      #avaxPriceBox {
+        top: 200px;
+        border: 1px solid #002f86;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-toggle {
+        cursor: pointer;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: none;
+        width: 100%;
+        min-width: 170px;
+        z-index: 1;
+      }
+
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu li {
+        margin: 0;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .dropdown-menu li:last-child {
+        border-bottom: none;
+      }
+
+      .dropdown-menu a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .dropdown-menu a:hover {
+        color: var(--secondary-color);
+      }
+
+      @media (max-width: 768px) {
+        main {
+          width: 90%;
+        }
+
+        #ethPriceBox,
+        #avaxPriceBox {
+          position: static;
+          margin: 10px auto;
+          display: block;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body
+    onload="checkLoginStatus(); getEthPrice(); getUserBalance(); getUserBalance2(); getAvaxPrice(); "
+  >
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Wallet Actions V</a>
+          <ul class="dropdown-menu">
+            <li><a href="SendCoins.html">Send Coins</a></li>
+            <li><a href="TransactionHistory.html">Transaction History</a></li>
+            <li><a href="CreateWallet.html">Create Wallet</a></li>
+            <li><a href="RestoreAccount.html">Restore Account</a></li>
+          </ul>
+        </li>
+        <li><button onclick="logOut()">Log Out</button></li>
+      </ul>
+    </nav>
+    <p id="loginStatus"></p>
+    <main>
+      <h1>My Wallet</h1>
+      <div class="infoRow">
+        <span>My Address:</span>
+        <span id="walletAddress"></span>
+      </div>
+      <div class="infoRow">
+        <span>My ETH Balance:</span>
+        <span id="walletBalance"></span>
+      </div>
+      <div class="infoRow">
+        <span>My AVAX Balance:</span>
+        <span id="walletBalanceAvax"></span>
+      </div>
+    </main>
+    <div id="ethPriceBox">ETH Price: <span id="ethPrice"></span>$</div>
+    <div id="avaxPriceBox">AVAX Price: <span id="avaxPrice"></span>$</div>
+
+    <script src="lightwallet.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.x.x/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
+    <script src="mainsfuncs.js"></script>
+  </body>
+</html>

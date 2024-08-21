@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HD Wallet - Restore Account</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Global styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      :root {
+        --primary-color: #2d9cdb;
+        --secondary-color: #56ccf2;
+        --background-color: #f0f4f8;
+        --text-color: #333;
+        --box-shadow-color: rgba(0, 0, 0, 0.1);
+        --input-focus-color: #2d9cdb;
+        --nav-background: #ffffff;
+        --main-background: #ffffff;
+        --nav-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --card-background: #ffffff;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --box-padding: 20px;
+      }
+
+      body {
+        background: url("https://source.unsplash.com/random/1920x1080") no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: var(--background-color);
+        padding: 20px;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--nav-background);
+        padding: 10px 0;
+        box-shadow: var(--nav-shadow);
+      }
+
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      nav li {
+        margin: 0 15px;
+      }
+
+      nav a,
+      nav button {
+        color: var(--primary-color);
+        text-decoration: none;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      nav a:hover,
+      nav button:hover {
+        color: var(--secondary-color);
+      }
+
+      main {
+        background-color: var(--main-background);
+        box-shadow: var(--card-shadow);
+        border-radius: 10px;
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      h1 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        font-weight: 600;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        transition: border 0.3s;
+        font-size: 14px;
+      }
+
+      input:focus {
+        border-color: var(--input-focus-color);
+        box-shadow: 0 0 8px rgba(45, 156, 219, 0.5);
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        color: white;
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        margin-top: 20px;
+      }
+
+      button[type="submit"]:hover {
+        background-color: var(--secondary-color);
+      }
+
+      #seedPhrase {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      #seedPhrase input {
+        margin-bottom: 0;
+        /* Removes bottom margin within grid layout */
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-toggle {
+        cursor: pointer;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: none;
+        width: 100%;
+        min-width: 170px;
+        z-index: 1;
+      }
+
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu li {
+        margin: 0;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .dropdown-menu li:last-child {
+        border-bottom: none;
+      }
+
+      .dropdown-menu a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .dropdown-menu a:hover {
+        color: var(--secondary-color);
+      }
+    </style>
+  </head>
+
+  <body onload="logOut();">
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Wallet Actions</a>
+          <ul class="dropdown-menu">
+            <li><a href="SendCoins.html">Send Coins</a></li>
+            <li><a href="TransactionHistory.html">Transaction History</a></li>
+            <li><a href="CreateWallet.html">Create Wallet</a></li>
+            <li><a href="RestoreAccount.html">Restore Account</a></li>
+          </ul>
+        </li>
+        <li><button onclick="logOut()">Log Out</button></li>
+      </ul>
+    </nav>
+    <main>
+      <h1>Restore Account</h1>
+      <form
+        id="restoreAccountForm"
+        onsubmit="event.preventDefault(); restoreAccountHTML();"
+      >
+        <div class="form-group">
+          <label for="seedPhrase">Seed Phrase</label>
+          <div id="seedPhrase">
+            <input
+              type="text"
+              id="word1"
+              name="word1"
+              placeholder="Word 1"
+              required
+            />
+            <input
+              type="text"
+              id="word2"
+              name="word2"
+              placeholder="Word 2"
+              required
+            />
+            <input
+              type="text"
+              id="word3"
+              name="word3"
+              placeholder="Word 3"
+              required
+            />
+            <input
+              type="text"
+              id="word4"
+              name="word4"
+              placeholder="Word 4"
+              required
+            />
+            <input
+              type="text"
+              id="word5"
+              name="word5"
+              placeholder="Word 5"
+              required
+            />
+            <input
+              type="text"
+              id="word6"
+              name="word6"
+              placeholder="Word 6"
+              required
+            />
+            <input
+              type="text"
+              id="word7"
+              name="word7"
+              placeholder="Word 7"
+              required
+            />
+            <input
+              type="text"
+              id="word8"
+              name="word8"
+              placeholder="Word 8"
+              required
+            />
+            <input
+              type="text"
+              id="word9"
+              name="word9"
+              placeholder="Word 9"
+              required
+            />
+            <input
+              type="text"
+              id="word10"
+              name="word10"
+              placeholder="Word 10"
+              required
+            />
+            <input
+              type="text"
+              id="word11"
+              name="word11"
+              placeholder="Word 11"
+              required
+            />
+            <input
+              type="text"
+              id="word12"
+              name="word12"
+              placeholder="Word 12"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" name="newPassword" required />
+        </div>
+        <div id="errorMsg"></div>
+        <button type="submit">Restore Account</button>
+      </form>
+    </main>
+    <script src="/lightwallet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
+    <script src="/mainsfuncs.js"></script>
+    <script>
+      function restoreAccountHTML() {
+        // Get seed phrase from inputs
+        let seedPhrase = "";
+        for (let i = 1; i <= 12; i++) {
+          seedPhrase += document.getElementById("word" + i).value + " ";
+        }
+        seedPhrase = seedPhrase.trim();
+
+        var message = restoreAccount(seedPhrase);
+
+        // Display the returned message
+        document.getElementById("errorMsg").innerText = message;
+      }
+    </script>
+  </body>
+</html>
